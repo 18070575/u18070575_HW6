@@ -1,0 +1,67 @@
+﻿@model IPagedList<u18070575_HW6.Models.OrdersVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+@using PagedList;
+@using PagedList.Mvc;
+
+@using (Html.BeginForm("Index", "Order", FormMethod.Get))
+{
+    <form class="form-inline" role="form">
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <input type="text" class="form-control" name="search" id="search" placeholder="Enter Product Name">
+            </div>
+            <div class="form-group col-lg-1">
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </div>
+    </form>
+}
+
+
+@foreach (var order in Model)
+{
+    if (order.Products.Count() != 0)
+    {
+        <h3>Order @order.OrderId - @order.OrderDate.ToShortDateString()</h3>
+        <table class="table">
+            <tr>
+                <th width="680">Product Name</th>
+                <th>List Price</th>
+                <th>Qauntity</th>
+                <th>Total</th>
+            </tr>
+            @foreach (object p in order.Products)
+            {
+                <tr>
+                    <td>@p.GetType().GetProperty("product_name").GetValue(p)</td>
+                    <td>R @p.GetType().GetProperty("price").GetValue(p)</td>
+                    <td>@p.GetType().GetProperty("Quantity").GetValue(p)</td>
+                    <td>@p.GetType().GetProperty("Total").GetValue(p)</td>
+                </tr>
+
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td><strong>Grand Total</strong></td>
+                @{
+                    double grandTotal = 0;
+                }
+
+                @foreach (object p in order.Products)
+                {
+                    grandTotal += Convert.ToDouble(@p.GetType().GetProperty("Total").GetValue(p));
+
+                }
+                <td>@grandTotal</td>
+            </tr>
+        </table>
+        <br />
+    }
+
+}
+
+@Html.PagedListPager(Model, i => Url.Action("Index", "Order", new { i, search = Request.QueryString["search"] }))

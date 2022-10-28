@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Graph";
+}
+
+<h2>Mountain Bikes Report</h2>
+
+<div class="mb-5 mt-5">
+    <div>
+        <canvas id="chart" width="1000" height="400"></canvas>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("ChartData", "Order")",
+                method: "GET",
+                success: (data, status) => {
+                    console.log(data);
+                   // console.log(status);
+
+
+                    let ProductsList = JSON.parse(data);
+                    var chartData = [0,0,0,0,0,0,0,0,0,0,0,0];
+                    ProductsList.forEach((item) => {
+
+                        for (var i = 0; i < item.Products.length; i++) {
+
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 1) {
+                                chartData[0] = chartData[0] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 2) {
+                                chartData[1] = chartData[1] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 3) {
+                                chartData[2] = chartData[2] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 4) {
+                                chartData[3] = chartData[3] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 5) {
+                                chartData[4] = chartData[4] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 6) {
+                                chartData[5] = chartData[5] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 7) {
+                                chartData[6] = chartData[6] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 8) {
+                                chartData[7] = chartData[7] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 9) {
+                                chartData[8] = chartData[8] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 10) {
+                                chartData[9] = chartData[9] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 11) {
+                                chartData[10] = chartData[10] + item.Products[i].Quantity;
+                            }
+                            if (item.Products[i].category == "Mountain Bikes" && item.Products[i].month == 12) {
+                                chartData[11] = chartData[11] + item.Products[i].Quantity;
+                            }
+
+                        }
+
+
+
+                    });
+                    
+                   // The graph 
+                    let ctx = $("#chart");
+                    let chart = new Chart(ctx, {
+                        type: 'bar',
+
+                        data: {
+                            labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                            datasets: [{
+                                label: 'Number of Mountain Bikes Sold',
+                                data: chartData,
+                                fillColor: "rgba(220,220,220,0.5)",
+                                backgroundColor: ['rgb(255, 99, 132)', 'rgb(0, 255, 0)', 'rgb(255, 99, 132)', 'rgb(128, 255, 0)', 'rgb(0, 255, 255)', 'rgb(255, 255, 0)', 'rgb(255, 255, 128)'], 
+                                highlightFill: "rgba(220,220,220,0.75)",
+                                highlightStroke: "rgba(220,220,220,1)",
+                                 
+                            }]
+
+                        }
+                    });
+                }
+            });
+
+           
+                
+            
+
+        });
+    </script>
+}
